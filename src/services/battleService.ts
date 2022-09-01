@@ -1,11 +1,14 @@
 import axios from "axios";
+import got from 'got'
 
 export async function battlePost(users){
-    const firstUser = users.firstUser
+    const firstUser:string = users.firstUser
     try{
-        console.log((firstUser)=>{
-            axios.get(`https://api.github.com/users/${firstUser}/starred`)
-            .then((res) => JSON.parse(res.data))
+        
+
+        const stars = (user) =>
+            axios.get(`https://api.github.com/users/${user}/starred`)
+            .then((res) => (res.data))
             .then((starred) => starred.map((s) => ({
                 owner:       s.owner.login
                 , repo:        s.name
@@ -15,7 +18,9 @@ export async function battlePost(users){
                 , stargazers:  s.stargazers_count
                 , watchers:    s.watchers_count
             })))
-        })
+
+        stars(firstUser).then(console.log)
+            
     }catch (err) {
         console.log(err);
     }
